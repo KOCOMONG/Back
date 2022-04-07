@@ -13,6 +13,10 @@ class database:
         self.user=db_user
         self.pw=db_pw
         self.host=db_host
+        
+
+    #connect
+    def connect(self):
         self.conn=pymysql.connect(host=self.host,user=self.user,password=self.pw,db=self.db,charset='utf8')
         self.cursor=self.conn.cursor()
 
