@@ -1,6 +1,7 @@
 
 
-from flask import Flask,Request
+from flask import Flask,request
+from database import database
 
 
 
@@ -8,18 +9,30 @@ from flask import Flask,Request
 def createAPP():
     app=Flask(__name__)
 
+    db=database() #database class instance 생성
 
 
     #회원가입 
     @app.route("/register",methods=['POST'])
     def register():
         
-        username=Request.form['name']
-        userid=Request.form['id']
-        userpw=Request.form['pw']
+        username=request.form['name']
+        userid=request.form['id']
+        userpw=request.form['pw']
         
+        db.connect()
+        db.register(username,userid,userpw)
+        db.connect_out()
 
+        return "insert complete"
 
+    @app.route("/getUserInformation",methods=['GET'])
+    def getUserInformation():
+        db.connect()
+        username=request.args.get('name')
+        information=db.get_user_information(username)
+        db.connect_out()
 
+        return information
 
     return app
