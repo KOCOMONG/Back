@@ -1,5 +1,4 @@
 
-
 from flask import Flask,request
 from database import database
 
@@ -11,42 +10,53 @@ def createAPP():
 
     db=database() #database class instance 생성
 
-    #해당 유저의 계정이 존재하는지 확인
-    def judUserExists(userid):
-        db.connect()
-        
-        
-        
-        
-        
-        
-        db.connect_out()
-        
-    
+
     
     #회원가입 
     @app.route("/register",methods=['POST'])
     def register():
         
-        username=request.form['name']
-        userid=request.form['id']
-        userpw=request.form['pw']
+        name=request.form['name']
+        id=request.form['id']
+        pw=request.form['pw']
         
         db.connect()
-        db.register(username,userid,userpw)
+        db.register(name,id,pw)
         db.connect_out()
 
         return "insert complete"
 
-    
-    
-    @app.route("/getUserInformation",methods=['GET'])
-    def getUserInformation():
+    #기초 문진 data 저장
+    @app.route("/updateUserBasicPaperweightData",methods=['PUT'])
+    def updateUserBasicPaperweightData():
+        
+        name=request.form['name']
+        sex=request.form['sex']
+        age=request.form['age']
+        height=request.form['height']
+        weight=request.form['weight']
+        
         db.connect()
-        username=request.args.get('name')
-        information=db.get_user_information(username)
+        db.update_basic_paperweight(name,sex,age,height,weight)
+        db.connect_out()
+        
+        return "update complete"
+    
+    
+    
+    
+    #기초 문진 data 받기 
+    @app.route("/getUserBasicPaperweightData",methods=['GET'])
+    def getUserBasicPaperweightData():
+        db.connect()
+        
+        name=request.form['name']
+        
+        data=db.get_basic_papaerweight(name)
+        
+        
         db.connect_out()
 
-        return information
+        return data
 
     return app

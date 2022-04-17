@@ -26,9 +26,6 @@ class database:
         self.conn.close()
 
     
-    #jud user exists
-    def jud_user_exists(self,userid):
-        sql=""
 
     #회원가입 회원정보 저장
     def register(self,name,id,pw):
@@ -38,17 +35,17 @@ class database:
         
         
     #기초문진 정보 저장
-    def update_basic_information(self,userid,sex,age,height,weight):
-        sql="update "+userTable+" set sex='"+sex+"' where userid='"+userid+"'"
+    def update_basic_paperweight(self,name,sex,age,height,weight):
+        sql="update "+userTable+" set sex='"+sex+"' where name='"+name+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userTable+" set age='"+age+"' where userid='"+userid+"'"
+        sql="update "+userTable+" set age='"+age+"' where name='"+name+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userTable+" set height='"+height+"' where userid='"+userid+"'"
+        sql="update "+userTable+" set height='"+height+"' where name='"+name+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userTable+" set weight='"+weight+"' where userid='"+userid+"'"
+        sql="update "+userTable+" set weight='"+weight+"' where name='"+name+"'"
         self.cursor.execute(sql)
         
         self.conn.commit() #save
@@ -56,5 +53,20 @@ class database:
         
 
 
+    #기초문진 정보 반환
+    def get_basic_papaerweight(self,name):
+        sql="select sex,age,height,weight from "+userTable+" where name='"+name+"'"
+
+        self.cursor.execute(sql)
         
+        
+        data_tuple=self.cursor.fetchone() #tuple
+        
+        data_dic={} #dictionary
+        data_dic['sex']=data_tuple[0]
+        data_dic['age']=data_tuple[1]
+        data_dic['height']=data_tuple[2]
+        data_dic['weight']=data_tuple[3]
+        
+        return data_dic    
     
