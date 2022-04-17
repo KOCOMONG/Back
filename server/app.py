@@ -11,7 +11,19 @@ def createAPP():
 
     db=database() #database class instance 생성
 
-
+    #해당 유저의 계정이 존재하는지 확인
+    def judUserExists(userid):
+        db.connect()
+        
+        
+        
+        
+        
+        
+        db.connect_out()
+        
+    
+    
     #회원가입 
     @app.route("/register",methods=['POST'])
     def register():
@@ -26,6 +38,8 @@ def createAPP():
 
         return "insert complete"
 
+    
+    
     @app.route("/getUserInformation",methods=['GET'])
     def getUserInformation():
         db.connect()

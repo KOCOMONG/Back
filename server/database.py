@@ -25,26 +25,36 @@ class database:
     def connect_out(self):
         self.conn.close()
 
+    
+    #jud user exists
+    def jud_user_exists(self,userid):
+        sql=""
 
-    #회원정보 입력
-    def register(self,name,userid,userpw):
-        sql="insert into "+userTable+" (username,userid,userpw) values (" + "'"+name+"','"+userid+"','"+userpw+"')"
+    #회원가입 회원정보 저장
+    def register(self,name,id,pw):
+        sql="insert into "+userTable+" (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
         self.conn.commit() #save
-
-    #회원정보 전송
-    def get_user_information(self,username):
-        sql="select * from "+userTable+" where username='"+username+"'"
+        
+        
+    #기초문진 정보 저장
+    def update_basic_information(self,userid,sex,age,height,weight):
+        sql="update "+userTable+" set sex='"+sex+"' where userid='"+userid+"'"
         self.cursor.execute(sql)
         
-        rows=self.cursor.fetchall() #result list
-
-        user_information_tuple=rows[0] #user information row, tuple 로 return
-
-        user_information=""
+        sql="update "+userTable+" set age='"+age+"' where userid='"+userid+"'"
+        self.cursor.execute(sql)
+        
+        sql="update "+userTable+" set height='"+height+"' where userid='"+userid+"'"
+        self.cursor.execute(sql)
+        
+        sql="update "+userTable+" set weight='"+weight+"' where userid='"+userid+"'"
+        self.cursor.execute(sql)
+        
+        self.conn.commit() #save
+        
         
 
-        return user_information
 
         
     
