@@ -1,4 +1,3 @@
-
 import pymysql
 from config import db_name,db_user,db_pw,db_host,userTable 
 
@@ -25,28 +24,47 @@ class database:
     def connect_out(self):
         self.conn.close()
 
+    
 
-    #회원정보 입력
-    def register(self,name,userid,userpw):
-        sql="insert into "+userTable+" (username,userid,userpw) values (" + "'"+name+"','"+userid+"','"+userpw+"')"
+    #회원가입 회원정보 저장
+    def register(self,name,id,pw):
+        sql="insert into "+userTable+" (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
         self.conn.commit() #save
-
-    #회원정보 전송
-    def get_user_information(self,username):
-        sql="select * from "+userTable+" where username='"+username+"'"
+        
+        
+    #기초문진 정보 저장
+    def update_basic_paperweight(self,name,sex,age,height,weight):
+        sql="update "+userTable+" set sex='"+sex+"' where name='"+name+"'"
         self.cursor.execute(sql)
         
-        rows=self.cursor.fetchall() #result list
-
-        user_information_tuple=rows[0] #user information row, tuple 로 return
-
-        user_information=""
-
+        sql="update "+userTable+" set age='"+age+"' where name='"+name+"'"
+        self.cursor.execute(sql)
+        
+        sql="update "+userTable+" set height='"+height+"' where name='"+name+"'"
+        self.cursor.execute(sql)
+        
+        sql="update "+userTable+" set weight='"+weight+"' where name='"+name+"'"
+        self.cursor.execute(sql)
+        
+        self.conn.commit() #save
         
         
 
-        return user_information
 
+    #기초문진 정보 반환
+    def get_basic_papaerweight(self,name):
+        sql="select sex,age,height,weight from "+userTable+" where name='"+name+"'"
+
+        self.cursor.execute(sql)
         
-    
+        
+        data_tuple=self.cursor.fetchone() #tuple
+        
+        data_dic={} #dictionary
+        data_dic['sex']=data_tuple[0]
+        data_dic['age']=data_tuple[1]
+        data_dic['height']=data_tuple[2]
+        data_dic['weight']=data_tuple[3]
+        
+        return data_dic  
