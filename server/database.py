@@ -42,6 +42,8 @@ class database:
         user_information_tuple=rows[0] #user information row, tuple 로 return
 
         user_information=""
+
+        
         
 
         return user_information
