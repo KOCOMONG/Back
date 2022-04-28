@@ -17,11 +17,11 @@ def createAPP():
     def register():
         
         name=request.form['name']
-        id=request.form['id']
+        userid=request.form['id']
         pw=request.form['pw']
         
         db.connect()
-        db.register(name,id,pw)
+        db.register(name,userid,pw)
         db.connect_out()
 
         return "insert complete"
@@ -35,9 +35,12 @@ def createAPP():
         age=request.form['age']
         height=request.form['height']
         weight=request.form['weight']
+        event=request.form['event']
+        history=request.form['history']
+        pregnant=request.form['pregnant']
         
         db.connect()
-        db.update_basic_paperweight(name,sex,age,height,weight)
+        db.update_basic_paperweight(name,sex,age,height,weight,event,history,pregnant)
         db.connect_out()
         
         return "update complete"
