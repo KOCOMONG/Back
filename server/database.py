@@ -1,6 +1,6 @@
 
 import pymysql
-from config import db_name,db_user,db_pw,db_host,userTable,userbasicdata 
+from config import db_name,db_user,db_pw,db_host,userlist,userbasicdata 
 
 
 class database:
@@ -25,11 +25,13 @@ class database:
     def connect_out(self):
         self.conn.close()
 
-    
+    #id 중복 체크
+    def checkid(self,id):
+        sql="select id from userlist where id='"+id+"'"
 
     #회원가입 회원정보 저장
     def register(self,name,id,pw):
-        sql="insert into "+userTable+" (name,id,password) values (" + "'"+name+"','"+id+"','"+pw+"')"
+        sql="insert into "+userlist+" (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
         
         sql="insert into "+userbasicdata+" (id) values ("+"'"+id+"');"
@@ -39,49 +41,49 @@ class database:
         
         
     #기초문진 정보 저장
-    def update_basic_paperweight(self,name,sex,age,height,weight,event,history,pregnant):
-        
-        sql="select id from "+userTable+" where name='"+name+"'"
-        self.cursor.execute(sql)
+    def update_userbasicdata(self,id,sex,age,height,weight,event,history,pregnant):
 
-        userid=self.cursor.fetchall()[0][0]
-        
-        sql="update "+userbasicdata +" set sex='"+sex+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set sex='"+sex+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set age='"+age+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set age='"+age+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
         
-        sql="update "+userbasicdata +" set height='"+height+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set height='"+height+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set weight='"+weight+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set weight='"+weight+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set event='"+event+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set event='"+event+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set history='"+history+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set history='"+history+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set pregnant='"+pregnant+"' where id='"+userid+"'"
+        sql="update "+userbasicdata +" set pregnant='"+pregnant+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
         self.conn.commit() #save
         
         
-
-
-    #기초문진 정보 반환
-    def get_basic_papaerweight(self,name):
-        
-        sql="select id from "+userTable+" where name='"+name+"'"
+    #.해당 id의 name,pw 반환
+    def get_userdata(self,id):
+        sql="select name,pw from "+userlist+" where id='"+id+"'"
         self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data_dic={} #dictionary
+        data_dic['name']=data_tuple[0]
+        data_dic['pw']=data_tuple[1]
 
-        userid=self.cursor.fetchall()[0][0]
+        return data_dic
+
+    #해당 id의 기초문진 정보 반환
+    def get_userbasicdata(self,id):
         
-        sql="select sex,age,height,weight,event,history,pregnant from "+userbasicdata+" where id='"+userid+"'"
+
+        sql="select sex,age,height,weight,event,history,pregnant from "+userbasicdata+" where id='"+id+"'"
 
         self.cursor.execute(sql)
         
