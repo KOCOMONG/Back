@@ -1,4 +1,4 @@
-from urllib import response
+
 import requests
 
 #의료챗봇 api test
