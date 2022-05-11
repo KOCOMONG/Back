@@ -16,20 +16,26 @@ class database:
         self.host=db_host
         
 
-    #connect
+    #db connect
     def connect(self):
         self.conn=pymysql.connect(host=self.host,user=self.user,password=self.pw,db=self.db,charset='utf8')
         self.cursor=self.conn.cursor()
 
-    #connect out 
+    #db connect out 
     def connect_out(self):
         self.conn.close()
 
     #id 중복 체크
     def checkid(self,id):
         sql="select id from userlist where id='"+id+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        if not data_tuple:
+            return 1 #id 중복 X
+        else:
+            return 0 #id 중복 
 
-    #회원가입 회원정보 저장
+    #회원가입
     def register(self,name,id,pw):
         sql="insert into "+userlist+" (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
@@ -40,7 +46,7 @@ class database:
         self.conn.commit() #save
         
         
-    #기초문진 정보 저장
+    #기초 문진 데이터 저장
     def update_userbasicdata(self,id,sex,age,height,weight,event,history,pregnant):
 
         sql="update "+userbasicdata +" set sex='"+sex+"' where id='"+id+"'"
@@ -79,7 +85,7 @@ class database:
 
         return data_dic
 
-    #해당 id의 기초문진 정보 반환
+    #해당 id의 기초 문진 데이터 반환
     def get_userbasicdata(self,id):
         
 

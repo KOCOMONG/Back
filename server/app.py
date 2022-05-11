@@ -13,7 +13,7 @@ def createAPP():
 
 
     
-    #user
+    #사용자 기본 데이터
     @app.route("/userlist",methods=['GET','POST'])
     def user():
 
@@ -30,19 +30,29 @@ def createAPP():
 
             return data
 
-        #user register
+        #회원가입
         if request.method=='POST':
             name=request.form['name']
-            userid=request.form['id']
+            id=request.form['id']
             pw=request.form['pw']
             
             db.connect()
-            db.register(name,userid,pw)
-            db.connect_out()
+
+            id_exist=db.checkid(id) #id 중복 체크
+            
+            if id_exist==1:
+                db.connect_out()
+                return "exists same id"
+            else:
+                db.register(name,id,pw)
+                db.connect_out()
+
+            
+            
 
             return "insert complete"
 
-    #user 기초 문진 data 
+    #사용자 기초 문진 데이터 
     @app.route("/userbasicdata",methods=['GET','PUT'])
     def userbasicdata():
 
@@ -59,7 +69,7 @@ def createAPP():
 
             return data
 
-        #update user basic data 
+        #기초 문진 데이터 업데이트
         if request.method=='PUT':
             id=request.form['id']
             sex=request.form['sex']
@@ -71,6 +81,8 @@ def createAPP():
             pregnant=request.form['pregnant']
             
             db.connect()
+
+
             db.update_userbasicdata(id,sex,age,height,weight,event,history,pregnant)
             db.connect_out()
             
