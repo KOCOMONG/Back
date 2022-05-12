@@ -1,11 +1,16 @@
 FROM python:3.8
 
-ADD . /server
+
+
+ADD . /capstone/server
+
+WORKDIR /capstone/server
 
 RUN apt-get update
 
 RUN pip install flask
+RUN pip install pymysql
 
-RUN cd server
+
 
 CMD python run.py
