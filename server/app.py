@@ -2,7 +2,8 @@
 
 from flask import Flask,request
 from database import database
-
+from model.diet import diet
+from model.diet.diet import Diet
 
 
 
@@ -89,8 +90,38 @@ def createAPP():
             return "update complete"
 
         
-    
-    
+    #식단조절
+    @app.route("/diet",methods=['GET'])
+    def diet():
+        if request.method=='GET':
+
+        
+
+            dietmodel=Diet() #식단추천모델 객체 생성
+
+            id=request.args.get('id')
+
+            db.connect()
+
+            data=db.get_userbasicdata(id) #해당 id의 기초문진 데이터 가져오기 
+
+            db.connect_out()
+
+            height=data['height']
+            weight=data['weight']
+            age=data['age']
+            sex=data['sex']
+            want_weight=float(request.args.get('want_weight'))
+            want_time=int(request.args.get('want_time'))
+            practice=int(request.args.get('practice'))
+
+            dietmodel.input(height,weight,age,sex,want_weight,want_time,practice)
+            dietmodel.rec()
+
+            result=dietmodel.result   
+
+            return result
+
     
     
         
