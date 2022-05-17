@@ -4,7 +4,7 @@ from flask import Flask,request
 from database import database
 from model.diet import diet
 from model.diet.diet import Diet
-
+from ast import literal_eval
 
 
 def createAPP():
@@ -95,8 +95,6 @@ def createAPP():
     def diet():
         if request.method=='GET':
 
-        
-
             dietmodel=Diet() #식단추천모델 객체 생성
 
             id=request.args.get('id')
@@ -118,8 +116,15 @@ def createAPP():
             dietmodel.input(height,weight,age,sex,want_weight,want_time,practice)
             dietmodel.rec()
 
-            result=dietmodel.result   
+            result_str=dietmodel.result   
+            
+            result_tuple=literal_eval(result_str) #튜플형 문자열을 튜플로 형변환
 
+            result={}
+            result['rice']=result_tuple[0] #밥
+            result['soup']=result_tuple[1] #국
+            result['sidedish']=result_tuple[2] #반찬
+            
             return result
 
     
