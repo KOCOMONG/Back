@@ -2,7 +2,7 @@
 
 from flask import Flask,request
 from database import database
-from model.diet import diet
+
 from model.diet.diet import Diet
 from ast import literal_eval
 
@@ -41,17 +41,20 @@ def createAPP():
 
             id_exist=db.checkid(id) #id 중복 체크
             
+            result={}
+
             if id_exist==1:
                 db.connect_out()
-                return "exists same id"
+                result['result']="overlap"
             else:
                 db.register(name,id,pw)
                 db.connect_out()
-
+                result['result']="complete"
             
             
+            
 
-            return "insert complete"
+            return result
 
     #사용자 기초 문진 데이터 
     @app.route("/userbasicdata",methods=['GET','PUT'])
@@ -87,7 +90,10 @@ def createAPP():
             db.update_userbasicdata(id,sex,age,height,weight,event,history,pregnant)
             db.connect_out()
             
-            return "update complete"
+            result={}
+            result['result']="complete"
+            
+            return result
 
         
     #식단조절
@@ -127,8 +133,31 @@ def createAPP():
             
             return result
 
-    
-    
-        
+    #의약데이터
+    @app.route("/medicine",methods=['GET'])
+    def medicine():
+        if request.method=='GET':
+            name=request.args.get('name')
+            tool=request.args.get('tool') #무슨 정보 받을 건지 
+            db.connect()
+
+            if tool=="keep":
+                data=db.find_keep(name)
+            elif tool=="effect":
+                data=db.find_effect(name)
+            elif tool=="useage":
+                data=db.find_useage(name)
+            elif tool=="caution":
+                data=db.find_caution(name)
+            else: #information
+                data=db.find_information(name)
+
+
+            db.connect_out()
+
+            data_dic={}
+            data_dic['data']=data
+
+            return data_dic
 
     return app

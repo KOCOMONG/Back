@@ -1,6 +1,6 @@
 
 import pymysql
-from config import db_name,db_user,db_pw,db_host,userlist,userbasicdata 
+from config import db_name,db_user,db_pw,db_host
 
 
 class database:
@@ -37,10 +37,10 @@ class database:
 
     #회원가입
     def register(self,name,id,pw):
-        sql="insert into "+userlist+" (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
+        sql="insert into userlist (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
         
-        sql="insert into "+userbasicdata+" (id) values ("+"'"+id+"');"
+        sql="insert into userbasicdata (id) values ("+"'"+id+"');"
         self.cursor.execute(sql)
         
         self.conn.commit() #save
@@ -49,26 +49,26 @@ class database:
     #기초 문진 데이터 저장
     def update_userbasicdata(self,id,sex,age,height,weight,event,history,pregnant):
 
-        sql="update "+userbasicdata +" set sex='"+sex+"' where id='"+id+"'"
+        sql="update userbasicdata set sex='"+sex+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set age='"+age+"' where id='"+id+"'"
+        sql="update userbasicdata set age='"+age+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
         
-        sql="update "+userbasicdata +" set height='"+height+"' where id='"+id+"'"
+        sql="update userbasicdata set height='"+height+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set weight='"+weight+"' where id='"+id+"'"
+        sql="update userbasicdata set weight='"+weight+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set event='"+event+"' where id='"+id+"'"
+        sql="update userbasicdata set event='"+event+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set history='"+history+"' where id='"+id+"'"
+        sql="update userbasicdata set history='"+history+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update "+userbasicdata +" set pregnant='"+pregnant+"' where id='"+id+"'"
+        sql="update userbasicdata set pregnant='"+pregnant+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
         self.conn.commit() #save
@@ -89,7 +89,7 @@ class database:
     def get_userbasicdata(self,id):
         
 
-        sql="select sex,age,height,weight,event,history,pregnant from "+userbasicdata+" where id='"+id+"'"
+        sql="select sex,age,height,weight,event,history,pregnant from userbasicdata where id='"+id+"'"
 
         self.cursor.execute(sql)
         
@@ -108,3 +108,44 @@ class database:
         
         return data_dic    
     
+    #medicine data 찾기 
+    def find_keep(self,name):
+        sql="select keep from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data=data_tuple[0]
+
+        return data
+    
+    def find_effect(self,name):
+        sql="select effect from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data=data_tuple[0]
+
+        return data
+
+    
+    def find_useage(self,name):
+        sql="select useage from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data=data_tuple[0]
+
+        return data
+
+    def find_caution(self,name):
+        sql="select caution from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data=data_tuple[0]
+        print(data)
+        return data
+
+    def find_information(self,name):
+        sql="select information from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        data=data_tuple[0]
+
+        return data
