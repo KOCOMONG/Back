@@ -3,7 +3,15 @@
 from flask import Flask,request
 from database import database
 
+import os
+import sys
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
 from model.diet.diet import Diet
+from model.level2.model import lv2_disease_diagnose 
+
+
 from ast import literal_eval
 
 
@@ -159,5 +167,35 @@ def createAPP():
             data_dic['data']=data
 
             return data_dic
+    
+    #lv2 모델 
+    @app.route("/level2",methods=['GET'])
+    def level2():
+        if request.method=='GET':
+            id=request.args.get('id')
+
+            db.connect()
+
+            data=db.get_userbasicdata(id) #해당 id의 기초문진 데이터 가져오기 
+
+            db.connect_out()
+
+            sex=data['sex']
+
+            cheifcomplaint=request.args.get('cheifcomplaint') #주요증상
+            onset=request.args.get('onset') #언제부터 증상이 시작되었는지
+            location=request.args.get('location') #해당부위
+
+            model=lv2_disease_diagnose()
+            model.input(sex,cheifcomplaint,onset,location)
+            model.run_model()
+            
+            result={}
+            result['result1']=model.result_1
+            result['result2']=model.result_2
+            result['result3']=model.result_3
+
+            return result
+
 
     return app
