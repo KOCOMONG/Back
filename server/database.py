@@ -40,14 +40,17 @@ class database:
         sql="insert into userlist (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
         self.cursor.execute(sql)
         
-        sql="insert into userbasicdata (id) values ("+"'"+id+"');"
+        sql="insert into userbasicdata (id) values ("+"'"+id+"');" #기초문진데이터 테이블 세팅
+        self.cursor.execute(sql)
+
+        sql="insert into diseasedata (id) values ("+"'"+id+"');" #질병진단데이터 테이블 세팅
         self.cursor.execute(sql)
         
         self.conn.commit() #save
         
         
-    #기초 문진 데이터 저장
-    def update_userbasicdata(self,id,sex,age,height,weight,event,history,pregnant):
+    #기초 문진 데이터 업데이트
+    def update_userbasicdata(self,id,sex,age,height,weight,event,past,feminity):
 
         sql="update userbasicdata set sex='"+sex+"' where id='"+id+"'"
         self.cursor.execute(sql)
@@ -65,18 +68,30 @@ class database:
         sql="update userbasicdata set event='"+event+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update userbasicdata set history='"+history+"' where id='"+id+"'"
+        sql="update userbasicdata set past='"+past+"' where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update userbasicdata set pregnant='"+pregnant+"' where id='"+id+"'"
+        sql="update userbasicdata set feminity='"+feminity +"' where id='"+id+"'"
         self.cursor.execute(sql)
         
         self.conn.commit() #save
         
+    #질병 진단 데이터 업데이트
+    def update_diseasedata(self,id,chiefcomplaint,onset,location):
+        sql="update diseasedata set chiefcomplaint='"+chiefcomplaint+"' where id='"+id+"'"
+        self.cursor.execute(sql)
         
+        sql="update diseasedata set onset='"+onset+"' where id='"+id+"'"
+        self.cursor.execute(sql)
+
+        sql="update diseasedata set location='"+location+"' where id='"+id+"'"
+        self.cursor.execute(sql)
+        
+        
+        self.conn.commit() #save
     #.해당 id의 name,pw 반환
     def get_userdata(self,id):
-        sql="select name,pw from "+userlist+" where id='"+id+"'"
+        sql="select name,pw from userlist where id='"+id+"'"
         self.cursor.execute(sql)
         data_tuple=self.cursor.fetchone() #tuple
         data_dic={} #dictionary
@@ -89,7 +104,7 @@ class database:
     def get_userbasicdata(self,id):
         
 
-        sql="select sex,age,height,weight,event,history,pregnant from userbasicdata where id='"+id+"'"
+        sql="select sex,age,height,weight,event,past,feminity  from userbasicdata where id='"+id+"'"
 
         self.cursor.execute(sql)
         
@@ -102,12 +117,31 @@ class database:
         data_dic['height']=data_tuple[2]
         data_dic['weight']=data_tuple[3]
         data_dic['event']=data_tuple[4]
-        data_dic['history']=data_tuple[5]
-        data_dic['pregnant']=data_tuple[6]
+        data_dic['past']=data_tuple[5]
+        data_dic['feminity']=data_tuple[6]
         
-        
+
         return data_dic    
-    
+
+    #질병진단 필수 데이터 반환
+    def get_diseasedata(self,id):
+        sql="select chiefcomplaint,onset,location from diseasedata where id='"+id+"'"
+
+        self.cursor.execute(sql)
+        
+        
+        data_tuple=self.cursor.fetchone() #tuple
+
+        data_dic={} #dictionary
+        data_dic['chiefcomplaint']=data_tuple[0]
+        data_dic['onset']=data_tuple[1]
+        data_dic['location']=data_tuple[2]
+        
+
+        return data_dic
+
+
+
     #medicine data 찾기 
     def find_keep(self,name):
         sql="select keep from medicine where name='"+name+"'"

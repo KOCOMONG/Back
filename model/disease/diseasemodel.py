@@ -103,13 +103,14 @@ class disease_diagnose:
         self.input_data = self.data_dic
 
         #남,녀 모델 분리
-        #남자 0 여자 1
-        if self.data_dic['sex'].values == '1':
+        if self.data_dic['sex'].values =='1':
+            self.data_dic['sex'][0]=='여자'
             self.model = self.w_loaded_model
             self.tokenizer = self.w_tokenizer
             self.disease_codes = self.w_disease_codes
             self.max_len=193
         else:
+            self.data_dic['sex'][0]=='남자'
             self.model = self.m_loaded_model 
             self.tokenizer = self.m_tokenizer 
             self.disease_codes = self.m_disease_codes   
@@ -272,11 +273,6 @@ class disease_diagnose:
         self.data_dic['weight'] = self.data_dic['weight'].astype(str)
         self.data_dic['BMI'] = self.data_dic['BMI'].astype(str)
         self.data_dic['obesity'] = self.data_dic['obesity'].astype(str)
-        
-        if self.data_dic['sex'].values == '1':
-            self.data_dic['sex']='여자'
-        else:
-            self.data_dic['sex']='남자'
 
 
         #7. 문장 생성
@@ -345,26 +341,27 @@ class disease_diagnose:
         LOD = load_disease_list()
 
         first_info = LOD[LOD['원 질병이름'] == first_pred_disease_name]
-        result1 = {
-                    '진단명:',first_pred_disease_name, round(first[1]*100, 2),'%','\n',
-                    '동의어:', first_info['동의어'].values[0]+'\n',
-                    '진료과: ', first_info['진료과'].values[0]+'\n',
-                    '질병 설명:', first_info['정의'].values[0]
-            }
+        result1 = [
+                    first_pred_disease_name, round(first[1]*100, 2),
+                    first_info['동의어'].values[0],
+                    first_info['진료과'].values[0],
+                    first_info['정의'].values[0]
+        ]
         second_info = LOD[LOD['원 질병이름'] == second_pred_disease_name]
-        result2 = {
-                    '진단명:', second_pred_disease_name, round(second[1]*100, 2),'%','\n',
-                    '동의어:', second_info['동의어'].values[0]+'\n',
-                    '진료과: ', second_info['진료과'].values[0]+'\n',
-                    '질병 설명:', second_info['정의'].values[0]
-            }
+        result2 = [
+                    second_pred_disease_name, round(second[1]*100, 2),
+                    second_info['동의어'].values[0],
+                    second_info['진료과'].values[0],
+                    second_info['정의'].values[0]
+        ]
         third_info = LOD[LOD['원 질병이름'] == third_pred_disease_name]
-        result3 = {
-                    '진단명:', third_pred_disease_name, round(third[1]*100, 2),'%','\n',
-                    '동의어:', third_info['동의어'].values[0]+'\n',
-                    '진료과: ', third_info['진료과'].values[0]+'\n',
-                    '질병 설명:', third_info['정의'].values[0]
-            }
+        result3 = [
+                    third_pred_disease_name, round(third[1]*100, 2),
+                    third_info['동의어'].values[0],
+                    third_info['진료과'].values[0],
+                    third_info['정의'].values[0]
+        ]
+        
         
         return result1,result2,result3
 
@@ -379,5 +376,6 @@ class disease_diagnose:
         y_prob = self.model(self.sequence)
 
         self.result1,self.result2,self.result3 = self.get_result(y_prob)
+
         
 

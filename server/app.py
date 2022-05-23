@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from model.diet.diet import Diet
 from model.level2.model import lv2_disease_diagnose 
-
+from model.disease.diseasemodel import disease_diagnose 
 
 from ast import literal_eval
 
@@ -51,7 +51,7 @@ def createAPP():
             
             result={}
 
-            if id_exist==1:
+            if id_exist==0:
                 db.connect_out()
                 result['result']="overlap"
             else:
@@ -89,13 +89,13 @@ def createAPP():
             height=request.form['height']
             weight=request.form['weight']
             event=request.form['event']
-            history=request.form['history']
-            pregnant=request.form['pregnant']
+            past=request.form['past']
+            feminity=request.form['feminity']
             
             db.connect()
 
 
-            db.update_userbasicdata(id,sex,age,height,weight,event,history,pregnant)
+            db.update_userbasicdata(id,sex,age,height,weight,event,past,feminity)
             db.connect_out()
             
             result={}
@@ -178,13 +178,18 @@ def createAPP():
 
             data=db.get_userbasicdata(id) #해당 id의 기초문진 데이터 가져오기 
 
-            db.connect_out()
+            
 
             sex=data['sex']
 
             cheifcomplaint=request.args.get('cheifcomplaint') #주요증상
             onset=request.args.get('onset') #언제부터 증상이 시작되었는지
             location=request.args.get('location') #해당부위
+
+            db.update_diseasedata(id,cheifcomplaint,onset,location) #질병 진단 필수 데이터 업데이트
+
+            db.connect_out()
+
 
             model=lv2_disease_diagnose()
             model.input(sex,cheifcomplaint,onset,location)
@@ -197,5 +202,73 @@ def createAPP():
 
             return result
 
+    #질병진단
+    @app.route("/disease",methods=['GET'])
+    def disease():    
+        if request.method=='GET':
+            id=request.args.get('id')
+            level2_answer=request.args.get('level2_answer') #lv2에서 사용자가 선택한 답안
+        
+            duration=request.args.get('duration') #증상지속
+            course=request.args.get('course') #증상의 양상
+            experience=request.args.get('experience')
+            character=request.args.get('character')
+            factor=request.args.get('factor') #어떤 경우에 증상이 더 심해지거나 완화되나?
+            associated=request.args.get('associated')
+            drug=request.args.get('drug')
+            social=request.args.get('social')
+            family=request.args.get('family')
+            traumatic=request.args.get('traumatic')
+            
+
+            db.connect()
+
+            data=db.get_userbasicdata(id) #해당 id의 기초문진 데이터 가져오기 
+
+            
+            
+            height=data['height']
+            weight=data['weight']
+            age=data['age']
+            sex=data['sex']
+            event=data['event']
+            past=data['past']
+            feminity=data['feminity']
+            
+            data=db.get_diseasedata(id) #해당 id의 diseasedata 가져오기
+
+            chiefcomplaint=data['chiefcomplaint']
+            onset=data['onset']
+            location=data['location']
+
+            db.connect_out()
+
+            #모델 불러오기
+            model=disease_diagnose()
+            model.input(level2_answer,height,weight,age,sex,chiefcomplaint,onset,location,duration,course,experience,character,factor,associated,event,drug,social,family,traumatic,past,feminity)
+            model.run_model()
+
+
+            #3개의 질병 정보 넘겨주기
+            data_dic={}
+            data_dic['name1']=model.result1[0]
+            data_dic['percent1']=model.result1[1]
+            data_dic['synonym1']=model.result1[2]
+            data_dic['department1']=model.result1[3]
+            data_dic['explain1']=model.result1[4]
+            
+            data_dic['name2']=model.result2[0]
+            data_dic['percent2']=model.result2[1]
+            data_dic['synonym2']=model.result2[2]
+            data_dic['department2']=model.result2[3]
+            data_dic['explain2']=model.result2[4]
+
+            data_dic['name3']=model.result3[0]
+            data_dic['percen3']=model.result3[1]
+            data_dic['synonym3']=model.result3[2]
+            data_dic['department3']=model.result3[3]
+            data_dic['explain3']=model.result3[4]
+
+            return data_dic
 
     return app
