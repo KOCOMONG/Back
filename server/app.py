@@ -5,7 +5,6 @@ from database import database
 
 import os
 import sys
-import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from model.diet.diet import Diet
@@ -105,13 +104,13 @@ def createAPP():
 
         
     #식단조절
-    @app.route("/diet",methods=['GET'])
+    @app.route("/diet",methods=['POST'])
     def diet():
-        if request.method=='GET':
+        if request.method=='POST':
 
             dietmodel=Diet() #식단추천모델 객체 생성
 
-            id=request.args.get('id')
+            id=request.form['id']
 
             db.connect()
 
@@ -123,9 +122,9 @@ def createAPP():
             weight=data['weight']
             age=data['age']
             sex=data['sex']
-            want_weight=float(request.args.get('want_weight'))
-            want_time=int(request.args.get('want_time'))
-            practice=int(request.args.get('practice'))
+            want_weight=float(request.form['want_weight'])
+            want_time=int(request.form['want_time'])
+            practice=int(request.form['practice'])
 
             dietmodel.input(height,weight,age,sex,want_weight,want_time,practice)
             dietmodel.rec()
@@ -169,10 +168,10 @@ def createAPP():
             return data_dic
     
     #lv2 모델 
-    @app.route("/level2",methods=['GET'])
+    @app.route("/level2",methods=['POST'])
     def level2():
-        if request.method=='GET':
-            id=request.args.get('id')
+        if request.method=='POST':
+            id=request.form['id']
 
             db.connect()
 
@@ -182,17 +181,17 @@ def createAPP():
 
             sex=data['sex']
 
-            cheifcomplaint=request.args.get('cheifcomplaint') #주요증상
-            onset=request.args.get('onset') #언제부터 증상이 시작되었는지
-            location=request.args.get('location') #해당부위
+            chiefcomplaint=request.form['chiefcomplaint'] #주요증상
+            onset=request.form['onset'] #언제부터 증상이 시작되었는지
+            location=request.form['location'] #해당부위
 
-            db.update_diseasedata(id,cheifcomplaint,onset,location) #질병 진단 필수 데이터 업데이트
+            db.update_diseasedata(id,chiefcomplaint,onset,location) #질병 진단 필수 데이터 업데이트
 
             db.connect_out()
 
 
             model=lv2_disease_diagnose()
-            model.input(sex,cheifcomplaint,onset,location)
+            model.input(sex,chiefcomplaint,onset,location)
             model.run_model()
             
             result={}
@@ -203,22 +202,22 @@ def createAPP():
             return result
 
     #질병진단
-    @app.route("/disease",methods=['GET'])
+    @app.route("/disease",methods=['post'])
     def disease():    
-        if request.method=='GET':
-            id=request.args.get('id')
-            level2_answer=request.args.get('level2_answer') #lv2에서 사용자가 선택한 답안
+        if request.method=='POST':
+            id=request.form['id']
+            level2_answer=request.form['level2_answer'] #lv2에서 사용자가 선택한 답안
         
-            duration=request.args.get('duration') #증상지속
-            course=request.args.get('course') #증상의 양상
-            experience=request.args.get('experience')
-            character=request.args.get('character')
-            factor=request.args.get('factor') #어떤 경우에 증상이 더 심해지거나 완화되나?
-            associated=request.args.get('associated')
-            drug=request.args.get('drug')
-            social=request.args.get('social')
-            family=request.args.get('family')
-            traumatic=request.args.get('traumatic')
+            duration=request.form['duration'] #증상지속
+            course=request.form['course'] #증상의 양상
+            experience=request.form['experience']
+            character=request.form['character']
+            factor=request.form['factor'] #어떤 경우에 증상이 더 심해지거나 완화되나?
+            associated=request.form['associated']
+            drug=request.form['drug']
+            social=request.form['social']
+            family=request.form['family']
+            traumatic=request.form['traumatic']
             
 
             db.connect()
@@ -270,5 +269,18 @@ def createAPP():
             data_dic['explain3']=model.result3[4]
 
             return data_dic
+
+
+    #delete from table 
+    @app.route("/deletetable",methods=['GET'])
+    def deletetable():    
+        if request.method=='GET':
+            tablename=request.args.get('tablename')
+            db.connect()
+            db.deletetable(tablename)
+            db.connect_out()
+            return "delete from "+tablename
+
+
 
     return app

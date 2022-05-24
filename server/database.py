@@ -173,7 +173,6 @@ class database:
         self.cursor.execute(sql)
         data_tuple=self.cursor.fetchone() #tuple
         data=data_tuple[0]
-        print(data)
         return data
 
     def find_information(self,name):
@@ -183,3 +182,19 @@ class database:
         data=data_tuple[0]
 
         return data
+
+    #delete from table
+    def deletetable(self,tablename):
+        if tablename=="all":
+            sql="delete from userlist"
+            self.cursor.execute(sql)
+            sql="delete from userbasicdata"
+            self.cursor.execute(sql)
+            sql="delete from diseasedata"
+            self.cursor.execute(sql)
+        else:
+            sql="delete from "+tablename
+            self.cursor.execute(sql)
+        
+        
+        self.conn.commit() #save
