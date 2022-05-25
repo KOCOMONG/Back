@@ -9,8 +9,8 @@ class diabetesdiet:
                     필요한 모델,라벨 불러오기
         '''
 
-        self.model = joblib.load('./model/diseasediet/diabetes.pkl')
-        self.label = pd.read_csv('./model/diseasediet/diabetes_foodlabel.csv')
+        self.model = joblib.load('./server/model/diseasediet/diabetes.pkl')
+        self.label = pd.read_csv('./server/model/diseasediet/diabetes_foodlabel.csv')
     
     def input(self,height,weight,age,sex,practice):
         self.data_dic={}

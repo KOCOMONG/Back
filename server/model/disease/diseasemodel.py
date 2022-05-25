@@ -20,7 +20,7 @@ class disease_diagnose:
         __init__() : 초기화 함수
                     필요한 모델 불러오기
         '''
-        DATA_PATH='./model/disease/'
+        DATA_PATH='./server/model/disease/'
 
         with open(DATA_PATH+'men_tokenizer.pickle', 'rb') as handle:
             self.m_tokenizer = pickle.load(handle)
@@ -334,7 +334,7 @@ class disease_diagnose:
         third_pred_disease_name = self.disease_codes[int(third[0])]
 
         def load_disease_list():
-            List_of_Disease = pd.read_csv('./model/disease/Disease_info.csv')
+            List_of_Disease = pd.read_csv('./server/model/disease/Disease_info.csv')
             return List_of_Disease
 
         ## 질병 목록 ##

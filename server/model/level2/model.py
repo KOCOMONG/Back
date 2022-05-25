@@ -18,7 +18,7 @@ class lv2_disease_diagnose:
         __init__() : 초기화 함수
                     필요한 모델 불러오기
         '''
-        DATA_PATH = './model/level2/'
+        DATA_PATH = './server/model/level2/'
         with open(DATA_PATH + 'm_level2_estimator.pkl', 'rb') as b:
             self.m_lv2_model = pickle.load(b)
 

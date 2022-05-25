@@ -1,5 +1,5 @@
 
-from app import createAPP
+from api.app import createAPP
 from config import server_port
 
 app=createAPP()

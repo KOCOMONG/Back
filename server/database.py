@@ -35,6 +35,17 @@ class database:
         else:
             return 0 #id 중복 
 
+    #login
+    def login(self,id,pw):
+        sql="select * from userlist where id='"+id+"' and pw='"+pw+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        if data_tuple:
+            return 1 #login 성공
+        else:
+            return 0 #일치하지 않는 아이디,비번
+
+            
     #회원가입
     def register(self,name,id,pw):
         sql="insert into userlist (name,id,pw) values (" + "'"+name+"','"+id+"','"+pw+"')"
