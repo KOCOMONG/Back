@@ -1,6 +1,6 @@
 
 from api.app import createAPP
-from config import server_port
+from database.config import server_port
 
 app=createAPP()
 

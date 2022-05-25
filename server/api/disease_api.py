@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from flask import Blueprint,request
-from database import database
+from database.database import database
 
 from model.disease.diseasemodel import disease_diagnose
 
