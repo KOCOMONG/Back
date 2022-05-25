@@ -1,17 +1,17 @@
 # API 정리
 
 ### /user
-#### /signup
-#### /login
-#### /basicdata
+> #### /signup
+> #### /login
+> #### /basicdata
 
 ### /model
-#### /medicine
-#### /diet
-#### /diseasediet
-#### /level2
+> #### /medicine
+> #### /diet
+> #### /diseasediet
+> #### /level2
 #### /disease
 
-### /update
-#### /basicdata
-#### /deletetable
+> ### /update
+> #### /basicdata
+> #### /deletetable
