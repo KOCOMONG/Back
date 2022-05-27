@@ -1,9 +1,6 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from flask import Flask
-from api import user_api,diet_api,disease_api,diseasediet_api,level2_api
+from api import user_api,diet_api,diseasediet_api,level2_api,disease_api
 
 def createAPP():
     app=Flask(__name__)

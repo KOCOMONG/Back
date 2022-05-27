@@ -1,9 +1,7 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
 
 from flask import Blueprint,request
-from database.database import database
+from db.database import database
 
 bp=Blueprint('update',__name__,url_prefix="/update")
 db=database() #database class instance 생성

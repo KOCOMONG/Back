@@ -1,9 +1,7 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
 
 from flask import Blueprint,request
-from database.database import database
+from db.database import database
 from ast import literal_eval
 
 from model.diet.diet import Diet
