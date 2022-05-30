@@ -18,7 +18,7 @@ def diet():
 
         dietmodel=Diet() #식단추천모델 객체 생성
 
-        id=request.form['id']
+        id=request.json['id']
 
         db.connect()
 
@@ -30,9 +30,9 @@ def diet():
         weight=data['weight']
         age=data['age']
         sex=data['sex']
-        want_weight=float(request.form['want_weight'])
-        want_time=int(request.form['want_time'])
-        practice=int(request.form['practice'])
+        want_weight=float(request.json['want_weight'])
+        want_time=int(request.json['want_time'])
+        practice=int(request.json['practice'])
 
         dietmodel.input(height,weight,age,sex,want_weight,want_time,practice)
         dietmodel.rec()

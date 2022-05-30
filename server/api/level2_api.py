@@ -14,7 +14,7 @@ db=database() #database class instance 생성
 @bp.route("/level2",methods=['POST'])
 def level2():
     if request.method=='POST':
-        id=request.form['id']
+        id=request.json['id']
 
         db.connect()
 
@@ -24,9 +24,9 @@ def level2():
 
         sex=data['sex']
 
-        chiefcomplaint=request.form['chiefcomplaint'] #주요증상
-        onset=request.form['onset'] #언제부터 증상이 시작되었는지
-        location=request.form['location'] #해당부위
+        chiefcomplaint=request.json['chiefcomplaint'] #주요증상
+        onset=request.json['onset'] #언제부터 증상이 시작되었는지
+        location=request.json['location'] #해당부위
 
         db.update_diseasedata(id,chiefcomplaint,onset,location) #질병 진단 필수 데이터 업데이트
 

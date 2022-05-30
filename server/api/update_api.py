@@ -11,14 +11,14 @@ db=database() #database class instance 생성
 @bp.route("/basicdata",methods=['PUT'])
 def update_basicdata():
     if request.method=='PUT':
-        id=request.form['id']
-        sex=request.form['sex']
-        age=request.form['age']
-        height=request.form['height']
-        weight=request.form['weight']
-        event=request.form['event']
-        past=request.form['past']
-        feminity=request.form['feminity']
+        id=request.json['id']
+        sex=request.json['sex']
+        age=request.json['age']
+        height=request.json['height']
+        weight=request.json['weight']
+        event=request.json['event']
+        past=request.json['past']
+        feminity=request.json['feminity']
         
         db.connect()
 

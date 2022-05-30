@@ -15,19 +15,19 @@ db=database() #database class instance 생성
 @bp.route("/disease",methods=['post'])
 def disease():    
     if request.method=='POST':
-        id=request.form['id']
-        level2_answer=request.form['level2_answer'] #lv2에서 사용자가 선택한 답안
+        id=request.json['id']
+        level2_answer=request.json['level2_answer'] #lv2에서 사용자가 선택한 답안
     
-        duration=request.form['duration'] #증상지속
-        course=request.form['course'] #증상의 양상
-        experience=request.form['experience']
-        character=request.form['character']
-        factor=request.form['factor'] #어떤 경우에 증상이 더 심해지거나 완화되나?
-        associated=request.form['associated']
-        drug=request.form['drug']
-        social=request.form['social']
-        family=request.form['family']
-        traumatic=request.form['traumatic']
+        duration=request.json['duration'] #증상지속
+        course=request.json['course'] #증상의 양상
+        experience=request.json['experience']
+        character=request.json['character']
+        factor=request.json['factor'] #어떤 경우에 증상이 더 심해지거나 완화되나?
+        associated=request.json['associated']
+        drug=request.json['drug']
+        social=request.json['social']
+        family=request.json['family']
+        traumatic=request.json['traumatic']
         
 
         db.connect()

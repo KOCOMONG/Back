@@ -13,9 +13,9 @@ db=database() #database class instance 생성
 @bp.route("/signup",methods=['POST'])
 def signup():
     if request.method=='POST':
-        name=request.form['name']
-        id=request.form['id']
-        pw=request.form['pw']
+        name=request.json['name']
+        id=request.json['id']
+        pw=request.json['pw']
         
         db.connect()
 
@@ -53,8 +53,8 @@ def login():
     #로그인
     if request.method=='POST':
         
-        id=request.form['id']
-        pw=request.form['pw']
+        id=request.json['id']
+        pw=request.json['pw']
         
         db.connect()
         login_jud=db.login(id,pw)

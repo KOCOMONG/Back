@@ -18,9 +18,9 @@ db=database() #database class instance 생성
 @bp.route("/diseasediet",methods=['POST'])
 def diseasediet():
     if request.method=='POST':
-        id=request.form['id'] #id
-        classification=request.form['classification'] #사용할 모델 종류
-        practice=int(request.form['practice']) #활동량 
+        id=request.json['id'] #id
+        classification=request.json['classification'] #사용할 모델 종류
+        practice=int(request.json['practice']) #활동량 
 
         db.connect()
 
