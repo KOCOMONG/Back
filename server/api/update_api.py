@@ -27,7 +27,7 @@ def update_basicdata():
         db.connect_out()
         
         result={}
-        result['result']="complete"
+        result['result']=1
         
         return result
 
