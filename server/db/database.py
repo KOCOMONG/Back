@@ -34,7 +34,17 @@ class database:
             return 1 #id 중복 X
         else:
             return 0 #id 중복 
-
+    
+    #기초문진 여부 체크
+    def checkbasicdata(self,id):
+        sql="select sex from userbasicdata where id='"+id+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        if data_tuple[0]==0 or data_tuple[0]==1:
+            return 1 #기초문진 완료
+        else:
+            return 0 #기초문진 필요
+        
     #login
     def login(self,id,pw):
         sql="select * from userlist where id='"+id+"' and pw='"+pw+"'"
@@ -63,17 +73,17 @@ class database:
     #기초 문진 데이터 업데이트
     def update_userbasicdata(self,id,sex,age,height,weight,event,past,feminity):
 
-        sql="update userbasicdata set sex='"+sex+"' where id='"+id+"'"
+        sql="update userbasicdata set sex="+sex+" where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update userbasicdata set age='"+age+"' where id='"+id+"'"
+        sql="update userbasicdata set age="+age+" where id='"+id+"'"
         self.cursor.execute(sql)
         
         
-        sql="update userbasicdata set height='"+height+"' where id='"+id+"'"
+        sql="update userbasicdata set height="+height+" where id='"+id+"'"
         self.cursor.execute(sql)
         
-        sql="update userbasicdata set weight='"+weight+"' where id='"+id+"'"
+        sql="update userbasicdata set weight="+weight+" where id='"+id+"'"
         self.cursor.execute(sql)
         
         sql="update userbasicdata set event='"+event+"' where id='"+id+"'"

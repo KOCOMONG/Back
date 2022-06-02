@@ -1,5 +1,6 @@
 import pandas as pd
 import joblib
+import random
 import numpy as np
 
 class saltdiet:
@@ -9,8 +10,8 @@ class saltdiet:
                     필요한 모델,라벨 불러오기
         '''
 
-        self.model = joblib.load('./model/diseasediet/salt.pkl')
-        self.label = pd.read_csv('./model/diseasediet/salt_foodlabel.csv')
+        self.model = joblib.load('./server/model/diseasediet/salt.pkl')
+        self.label = pd.read_csv('./server/model/diseasediet/salt_foodlabel.csv')
     
     def input(self,height,weight,age,sex,practice):
         self.data_dic={}
@@ -92,6 +93,14 @@ class saltdiet:
         
         y=self.model.predict([test.iloc[0]])
 
-        self.result = self.label['음식'][np.where(self.label['label'] == y[0])[0][0]]
-        print(self.result)
+        #결과
+        self.practice_cal = p_dcal
+        self.food_cal = f_dcal
+
+        food_list = self.label['음식'][np.where(self.label['구간'] == y[0])[0]]
+        cnt = random.randint(0, len(food_list)) 
         
+        self.result = food_list.iloc[cnt]
+
+        print(self.result)
+

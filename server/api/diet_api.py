@@ -4,7 +4,7 @@ from flask import Blueprint,request
 from db.database import database
 from ast import literal_eval
 
-from model.diet.diet import Diet
+from model.diet.model import Diet
 
 
 bp=Blueprint('diet',__name__,url_prefix="/model")
@@ -39,11 +39,17 @@ def diet():
 
         result_str=dietmodel.result   
         
-        result_tuple=literal_eval(result_str) #튜플형 문자열을 튜플로 형변환
-
+        
+        #튜플형 문자열을 튜플로 형변환
+        result_tuple=literal_eval(result_str) 
+    
+        
+        
         result={}
         result['rice']=result_tuple[0] #밥
         result['soup']=result_tuple[1] #국
         result['sidedish']=result_tuple[2] #반찬
+        result['practice_cal']=dietmodel.practice_cal #운동으로 빼야 할 칼로리
+        result['food_cal']=dietmodel.food_cal #음식으로 빼야 할 칼로리
         
         return result

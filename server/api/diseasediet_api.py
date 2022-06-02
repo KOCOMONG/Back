@@ -19,10 +19,28 @@ db=database() #database class instance 생성
 def diseasediet():
     if request.method=='POST':
         id=request.json['id'] #id
-        classification=request.json['classification'] #사용할 모델 종류
+        
+        #data classification 시작 
+        db.connect()
+        
+        basicdata=db.get_userbasicdata(id)
+        userpast=basicdata['past']
+        
+        
+        
+        if  userpast=="동맥경화" or "고지혈증" or "심근경색":
+            classification='chol' #사용할 모델 종류
+        elif userpast == "당뇨병성 신종" or "당뇨병성 망막병증" or "말초신경병증" or "동맥경화증" or "당뇨성마비":
+            classification='diabetes' #사용할 모델 종류
+        elif userpast == "고혈압" or "고혈압으로 인한 심장병" or "만성 신장병" or "뇌경색" or "위암" or "백의 고혈압" or "본태성 고혈압" or "임신성 고혈압" or "폐경에 의한 고혈압":
+            classification='salt' #사용할 모델 종류
+        else:
+            classification="salt" 
+        
+        
         practice=int(request.json['practice']) #활동량 
 
-        db.connect()
+        
 
         data=db.get_userbasicdata(id) #해당 id의 기초문진 데이터 가져오기 
 

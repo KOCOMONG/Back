@@ -1,5 +1,6 @@
 import pandas as pd
 import joblib
+import random
 import numpy as np
 
 class Diet:
@@ -94,9 +95,11 @@ class Diet:
             d_cal = BMR * 1.9
 
         '''
+
         _ 님이 w_t일간 m_w kg을 줄이기 위해서는
         매일 운동으로 p_dcal kcal 를 소모해야하고,
         식사는 하루 ( d_cal - f_dcal ) kcal 를 드시면 됩니다.
+
         '''
 
         #5. 총 열량, 탄,단,지 
@@ -120,4 +123,13 @@ class Diet:
         y=self.model.predict([test.iloc[0]])
 
         #7. 결과
-        self.result = self.label['음식'][np.where(self.label['label'] == y[0])[0][0]]
+        
+        self.practice_cal = p_dcal
+        self.food_cal = f_dcal
+        
+        food_list = self.label['음식'][np.where(self.label['구간'] == y[0])[0]]
+        cnt = random.randint(0, len(food_list)) 
+
+        self.result = food_list.iloc[cnt]
+
+        

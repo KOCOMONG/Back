@@ -1,5 +1,6 @@
 import pandas as pd
 import joblib
+import random
 import numpy as np
 
 class diabetesdiet:
@@ -29,7 +30,18 @@ class diabetesdiet:
 
 
     def rec(self):
-    
+        '''
+            rec() :
+                1. 목표체중(w_w), 목표기간(w_t) => 일 목표 소모 열량 (m_cal) 생성
+                2. 비만도 측정, 분류
+                3. 기초대사량 측정
+                4. 하루 필요 열량 분석
+                5. 총 열량, 탄,단,지 구하기
+                6. 모델 예측
+                7. 결과
+        '''
+
+        #1. 목표체중 : 표준 체중, 목표기간(w_t) => 일 목표 소모 열량 (m_cal) 생성
         if self.data_dic['weight']>self.data_dic['want_weight']:
             m_w=self.data_dic['weight']-self.data_dic['want_weight']
         else:
@@ -39,6 +51,7 @@ class diabetesdiet:
         m_cal=round(cal/self.data_dic['want_time'],2)
 
     
+        #3. 기초대사량 측정
 
         if self.data_dic['sex']==0: #남
             BMR = 66.47 + (13.75 * self.data_dic['weight']) + (5 * self.data_dic['height']) - (6.76 * self.data_dic['age'])
@@ -46,6 +59,7 @@ class diabetesdiet:
             BMR = 655.1 + (9.56 * self.data_dic['weight']) + (1.85 * self.data_dic['height']) - (4.68 * self.data_dic['age'])
             BMR = round(BMR,1)
 
+        #운동
         p_dcal=round(m_cal*0.5,2)
 
         #식사
@@ -63,6 +77,8 @@ class diabetesdiet:
         else:
             d_cal = BMR * 1.9
 
+
+        #5. 총 열량, 탄,단,지 
 
         if self.data_dic['weight']>self.data_dic['want_weight']:
             #다이어트 시 열량
@@ -91,8 +107,17 @@ class diabetesdiet:
 
         test=pd.DataFrame([test])
         
+        #6. 모델예측
         y=self.model.predict([test.iloc[0]])
 
-        self.result = self.label['음식'][np.where(self.label['label'] == y[0])[0][0]]
+        #7. 결과
+        self.practice_cal = p_dcal
+        self.food_cal = f_dcal
 
+        food_list = self.label['음식'][np.where(self.label['구간'] == y[0])[0]]
+        cnt = random.randint(0, len(food_list)) 
+        
+        self.result = food_list.iloc[cnt]
+
+        print(self.result)
         

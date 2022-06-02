@@ -25,11 +25,11 @@ def signup():
 
         if id_exist==0:
             db.connect_out()
-            result['result']="overlap"
+            result['result']=0
         else:
             db.register(name,id,pw)
             db.connect_out()
-            result['result']="complete"
+            result['result']=1
 
         return result
 
@@ -58,11 +58,21 @@ def login():
         
         db.connect()
         login_jud=db.login(id,pw)
-        db.connect_out()
+        
+        
         result={}
-        if login_jud==1: result['login']="succeed"
+        if login_jud==1: 
+            
+            basicdata_jud=db.checkbasicdata(id)
+            data=db.get_userdata(id)
+    
+            result['login']="succeed"
+            result['jud_basicdata']=basicdata_jud #기초문진 1이면 완료, 0이면 필요
+            result['name']=data['name']
+            
         else: result['login']="fail"
 
+        db.connect_out()
         return result
 
 
@@ -76,11 +86,32 @@ def userbasicdata():
     
         id=request.args.get('id')
         
-        data=db.get_userbasicdata(id)
+        basicdata_jud=db.checkbasicdata(id) #기초문진 1이면 완료, 0이면 필요
         
+        if(basicdata_jud==1):
+            data=db.get_userbasicdata(id)
+        else:
+            data="no data"
         
         db.connect_out()
 
         return data
 
-    
+#해당 id의 basicdata있는지 없는지 알려주는 api
+@bp.route("/judbasicdata",methods=['GET'])
+def judbasicdata():
+    if request.method=='GET':
+        db.connect()
+        id=request.args.get('id')
+        
+        basicdata_jud=db.checkbasicdata(id) #기초문진 1이면 완료, 0이면 필요
+        data={}
+        
+        if(basicdata_jud==1):
+            data['jud']=1 #data exist
+        else:
+            data['jud']=0 #data not exist
+        
+        db.connect_out()
+
+        return data
