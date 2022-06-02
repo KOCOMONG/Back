@@ -1,5 +1,6 @@
 
 import pymysql
+from sqlalchemy import null
 from config import db_name,db_user,db_pw,db_host
 
 
@@ -164,6 +165,15 @@ class database:
 
 
     #medicine data 찾기 
+    def jud_medicine(self,name):
+        sql="select keep from medicine where name='"+name+"'"
+        self.cursor.execute(sql)
+        data_tuple=self.cursor.fetchone() #tuple
+        if data_tuple==null: #해당 의약 데이터 없음
+            return 0
+        else: return 1 #해당 의약 데이터 존재함
+    
+    
     def find_keep(self,name):
         sql="select keep from medicine where name='"+name+"'"
         self.cursor.execute(sql)

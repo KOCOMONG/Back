@@ -13,23 +13,31 @@ def medicine():
     if request.method=='GET':
         name=request.args.get('name')
         tool=request.args.get('tool') #무슨 정보 받을 건지 
+        
+        data_dic={}
+        
         db.connect()
 
-        if tool=="keep":
-            data=db.find_keep(name)
-        elif tool=="effect":
-            data=db.find_effect(name)
-        elif tool=="useage":
-            data=db.find_useage(name)
-        elif tool=="caution":
-            data=db.find_caution(name)
-        else: #information
-            data=db.find_information(name)
-
+        if db.jud_medicine(name)==0: #해당 의약 데이터 없음
+            data_dic['data']="no data"
+        else:
+        
+            if tool=="keep":
+                data=db.find_keep(name)
+            elif tool=="effect":
+                data=db.find_effect(name)
+            elif tool=="useage":
+                data=db.find_useage(name)
+            elif tool=="caution":
+                data=db.find_caution(name)
+            else: #information
+                data=db.find_information(name)
+                
+            data_dic['data']=data
 
         db.connect_out()
 
-        data_dic={}
-        data_dic['data']=data
+        
+        
 
         return data_dic
