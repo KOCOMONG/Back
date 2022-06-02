@@ -166,10 +166,10 @@ class database:
 
     #medicine data 찾기 
     def jud_medicine(self,name):
-        sql="select keep from medicine where name='"+name+"'"
+        sql="select * from medicine where name='"+name+"'"
         self.cursor.execute(sql)
         data_tuple=self.cursor.fetchone() #tuple
-        if data_tuple==null: #해당 의약 데이터 없음
+        if not data_tuple: #해당 의약 데이터 없음
             return 0
         else: return 1 #해당 의약 데이터 존재함
     
