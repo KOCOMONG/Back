@@ -5,6 +5,7 @@
 > #### /signup
 > #### /login
 > #### /basicdata
+> #### /judbasicdata
 
 
 ### /model
