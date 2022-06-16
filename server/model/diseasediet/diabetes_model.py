@@ -111,8 +111,6 @@ class diabetesdiet:
         y=self.model.predict([test.iloc[0]])
 
         #7. 결과
-        self.practice_cal = p_dcal
-        self.food_cal = f_dcal
 
         food_list = self.label['음식'][np.where(self.label['구간'] == y[0])[0]]
         cnt = random.randint(0, len(food_list)) 

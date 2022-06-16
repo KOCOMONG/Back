@@ -70,4 +70,10 @@ def diseasediet():
         result['soup']=result_tuple[1] #국
         result['sidedish']=result_tuple[2] #반찬
         
+        
+        if classification=='salt':
+            result['salt']=1
+        else:
+            result['salt']=0
+        
         return result

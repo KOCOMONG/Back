@@ -61,19 +61,19 @@ def disease():
         #3개의 질병 정보 넘겨주기
         data_dic={}
         data_dic['name1']=model.result1[0]
-        data_dic['percent1']=model.result1[1]
+        data_dic['percent1']=str(model.result1[1])
         data_dic['synonym1']=model.result1[2]
         data_dic['department1']=model.result1[3]
         data_dic['explain1']=model.result1[4]
         
         data_dic['name2']=model.result2[0]
-        data_dic['percent2']=model.result2[1]
+        data_dic['percent2']=str(model.result2[1])
         data_dic['synonym2']=model.result2[2]
         data_dic['department2']=model.result2[3]
         data_dic['explain2']=model.result2[4]
 
         data_dic['name3']=model.result3[0]
-        data_dic['percen3']=model.result3[1]
+        data_dic['percent3']=str(model.result3[1])
         data_dic['synonym3']=model.result3[2]
         data_dic['department3']=model.result3[3]
         data_dic['explain3']=model.result3[4]

@@ -26,7 +26,7 @@ def medicine():
                 data=db.find_keep(name)
             elif tool=="effect":
                 data=db.find_effect(name)
-            elif tool=="useage":
+            elif tool=="usage":
                 data=db.find_useage(name)
             elif tool=="caution":
                 data=db.find_caution(name)

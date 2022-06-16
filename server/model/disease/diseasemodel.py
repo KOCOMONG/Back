@@ -22,22 +22,22 @@ class disease_diagnose:
         '''
         DATA_PATH='./server/model/disease/'
 
-        with open(DATA_PATH+'men_tokenizer.pickle', 'rb') as handle:
+        with open(DATA_PATH+'men_tokenizer_newclass.pickle', 'rb') as handle:
             self.m_tokenizer = pickle.load(handle)
 
-        with open(DATA_PATH+'women_tokenizer.pickle', 'rb') as handle:
+        with open(DATA_PATH+'women_tokenizer_newclass.pickle', 'rb') as handle:
             self.w_tokenizer = pickle.load(handle)
 
-        with open(DATA_PATH+"men_diseases.txt", "rb") as fp:
+        with open(DATA_PATH+"men_diseases_newclass.txt", "rb") as fp:
             self.m_disease_codes = pickle.load(fp)
 
-        with open(DATA_PATH+"women_diseases.txt", "rb") as fp:
+        with open(DATA_PATH+"women_diseases_newclass.txt", "rb") as fp:
             self.w_disease_codes = pickle.load(fp)
 
-        self.m_loaded_model = tf.saved_model.load(DATA_PATH+'m_model')
+        self.m_loaded_model = tf.saved_model.load(DATA_PATH+'m_model_newclass')
         
 
-        self.w_loaded_model = tf.saved_model.load(DATA_PATH+'w_model')
+        self.w_loaded_model = tf.saved_model.load(DATA_PATH+'w_model_newclass')
 
 
     
@@ -108,13 +108,13 @@ class disease_diagnose:
             self.model = self.w_loaded_model
             self.tokenizer = self.w_tokenizer
             self.disease_codes = self.w_disease_codes
-            self.max_len=193
+            self.max_len=163
         else:
             self.data_dic['sex'][0]=='남자'
             self.model = self.m_loaded_model 
             self.tokenizer = self.m_tokenizer 
             self.disease_codes = self.m_disease_codes   
-            self.max_len=193
+            self.max_len=163
         
 
         

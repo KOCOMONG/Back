@@ -8,9 +8,9 @@ db=database() #database class instance 생성
 
 
 #기초 문진 데이터 업데이트
-@bp.route("/basicdata",methods=['PUT'])
+@bp.route("/basicdata",methods=['POST'])
 def update_basicdata():
-    if request.method=='PUT':
+    if request.method=='POST':
         id=request.json['id']
         sex=request.json['sex']
         age=request.json['age']
